@@ -21,10 +21,15 @@ const options: ApexOptions = {
       left: 0,
       opacity: 0.1,
     },
-
     toolbar: {
-      show: false,
+      show: true, // Menampilkan toolbar untuk zooming dan panning
     },
+    zoom: { // Mengaktifkan zooming
+      enabled: true,
+    },
+    // toolbar: {
+    //   show: false,
+    // },
   },
   responsive: [
     {
@@ -48,6 +53,7 @@ const options: ApexOptions = {
     width: [2, 2],
     curve: 'straight',
   },
+  
   // labels: {
   //   show: false,
   //   position: "top",
@@ -60,16 +66,15 @@ const options: ApexOptions = {
     },
     yaxis: {
       lines: {
-        show: true,
+        show: false,
       },
     },
   },
   dataLabels: {
     enabled: false,
   },
-  markers: {
-    size: 4,
-    colors: '#fff',
+ markers: {
+    size: 0, // Menghilangkan titik bulat pada ujung line chart
     strokeColors: ['#3056D3', '#80CAEE'],
     strokeWidth: 3,
     strokeOpacity: 0.9,
@@ -81,6 +86,21 @@ const options: ApexOptions = {
       sizeOffset: 5,
     },
   },
+
+fill: {
+    type: 'gradient', // Anda dapat menggunakan jenis 'color' atau 'gradient' tergantung pada preferensi Anda
+    gradient: {
+        shade: 'light', // Anda dapat menyesuaikan bayangan warna dengan mengatur nilai ini ke 'dark' atau 'light'
+        type: 'vertical', // Anda dapat mengatur arah gradien sesuai kebutuhan Anda
+        shadeIntensity: 0.5, // Intensitas bayangan
+        gradientToColors: ['#3C50E0', '#80CAEE'], // Warna untuk gradien
+        inverseColors: true, // Untuk mengubah urutan warna gradien
+        opacityFrom: 0.7, // Opasitas awal
+        opacityTo: 0.1, // Opasitas akhir
+        stops: [0, 100], // Untuk mengatur posisi stop gradien
+    }
+},
+
   xaxis: {
     type: 'category',
     categories: [
@@ -124,15 +144,27 @@ interface ChartOneState {
 
 const ChartOne: React.FC = () => {
   const [state, setState] = useState<ChartOneState>({
+    // series: [
+    //   {
+    //     name: 'Product One',
+    //     data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
+    //   },
+
+    //   {
+    //     name: 'Product Two',
+    //     data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
+    //   },
+    // ],
+
+
     series: [
       {
         name: 'Product One',
-        data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
+        data: Array.from({ length: 100 }, () => Math.floor(Math.random() * 100)), // Generate 100 random numbers between 0 and 100
       },
-
       {
         name: 'Product Two',
-        data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
+        data: Array.from({ length: 100 }, () => Math.floor(Math.random() * 100)), // Generate 100 random numbers between 0 and 100
       },
     ],
   });
@@ -192,6 +224,7 @@ const ChartOne: React.FC = () => {
           />
         </div>
       </div>
+
     </div>
   );
 };

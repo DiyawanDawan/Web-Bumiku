@@ -4,7 +4,7 @@ import ChartOne from '../../components/Charts/ChartOne';
 import ChartThree from '../../components/Charts/ChartThree';
 import ChartTwo from '../../components/Charts/ChartTwo';
 import TableOne from '../../components/Tables/TableOne';
-import DefaultLayout from '../../layout/DefaultLayout';
+import { DefaultLayout } from '../../layout/DefaultLayout';
 
 const ECommerce: React.FC = () => {
   return (
