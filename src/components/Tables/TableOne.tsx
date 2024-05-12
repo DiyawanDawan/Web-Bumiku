@@ -1,65 +1,55 @@
-import { BRAND } from '../../types/brand';
-import BrandOne from '../../images/brand/brand-01.svg';
-import BrandTwo from '../../images/brand/brand-02.svg';
-import BrandThree from '../../images/brand/brand-03.svg';
-import BrandFour from '../../images/brand/brand-04.svg';
-import BrandFive from '../../images/brand/brand-05.svg';
+import React, { useState, useEffect } from 'react';
+// @ts-ignore
+import DBSourse from '../../data/api/db-sourse.js';
 
-const brandData: BRAND[] = [
-  {
-    logo: BrandOne,
-    name: 'Google',
-    visitors: 3.5,
-    revenues: '5,768',
-    sales: 590,
-    conversion: 4.8,
-  },
-  {
-    logo: BrandTwo,
-    name: 'Twitter',
-    visitors: 2.2,
-    revenues: '4,635',
-    sales: 467,
-    conversion: 4.3,
-  },
-  {
-    logo: BrandThree,
-    name: 'Github',
-    visitors: 2.1,
-    revenues: '4,290',
-    sales: 420,
-    conversion: 3.7,
-  },
-  {
-    logo: BrandFour,
-    name: 'Vimeo',
-    visitors: 1.5,
-    revenues: '3,580',
-    sales: 389,
-    conversion: 2.5,
-  },
-  {
-    logo: BrandFive,
-    name: 'Facebook',
-    visitors: 3.5,
-    revenues: '6,768',
-    sales: 390,
-    conversion: 4.2,
-  },
-];
+interface SensorData {
+  id: string;
+  sensorType: string;
+  value: number;
+  unit: string;
+  createdAt: string;
+}
 
 const TableOne = () => {
+  const [sensorData, setSensorData] = useState<SensorData[]>([]);
+  const [pageIndex, setPageIndex] = useState(0);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await DBSourse.allDataSensor();
+        setSensorData(response);
+      } catch (error) {
+        console.error('Error fetching sensor data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleNextPage = () => {
+    setPageIndex((prevIndex) => prevIndex + itemsPerPage);
+  };
+
+  const handlePrevPage = () => {
+    setPageIndex((prevIndex) => Math.max(prevIndex - itemsPerPage, 0));
+  };
+
+  const visibleData = sensorData.slice(pageIndex, pageIndex + itemsPerPage);
+  const currentPage = Math.ceil((pageIndex + 1) / itemsPerPage);
+  const totalPages = Math.ceil(sensorData.length / itemsPerPage);
+
   return (
-    <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+    <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 pb-10">
       <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
         Detection Sensor
       </h4>
-
       <div className="flex flex-col">
         <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
           <div className="p-2.5 xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              ID
+              No
             </h5>
           </div>
           <div className="p-2.5 text-center xl:p-5">
@@ -69,7 +59,7 @@ const TableOne = () => {
           </div>
           <div className="p-2.5 text-center xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              VALUE
+              VALUE (ppm pH)
             </h5>
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
@@ -79,46 +69,49 @@ const TableOne = () => {
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              CREATEAT
+              CREATED AT
             </h5>
           </div>
         </div>
 
-        {brandData.map((brand, key) => (
+        {visibleData.map((data, index) => (
           <div
             className={`grid grid-cols-3 sm:grid-cols-5 ${
-              key === brandData.length - 1
+              index === sensorData.length - 1
                 ? ''
                 : 'border-b border-stroke dark:border-strokedark'
             }`}
-            key={key}
+            key={index}
           >
-            <div className="flex items-center gap-3 p-2.5 xl:p-5">
-              <div className="flex-shrink-0">
-                <img src={brand.logo} alt="Brand" />
-              </div>
-              <p className="hidden text-black dark:text-white sm:block">
-                {brand.name}
-              </p>
+            <div className="flex items-center p-2.5 xl:p-5">
+              <p className="text-black dark:text-white">{index + 1 + pageIndex}</p>
             </div>
 
             <div className="flex items-center justify-center p-2.5 xl:p-5">
-              <p className="text-black dark:text-white">{brand.visitors}K</p>
+              <p className="text-black dark:text-white">{data.sensorType}</p>
             </div>
 
             <div className="flex items-center justify-center p-2.5 xl:p-5">
-              <p className="text-meta-3">${brand.revenues}</p>
+              <p className="text-black dark:text-white">{data.value}</p>
             </div>
 
             <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-              <p className="text-black dark:text-white">{brand.sales}</p>
+              <p className="text-black dark:text-white">{data.unit}</p>
             </div>
 
             <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-              <p className="text-meta-5">{brand.conversion}%</p>
+              <p className="text-black dark:text-white">{data.createdAt}</p>
             </div>
           </div>
         ))}
+
+        <div className="flex justify-between mt-4 m-4">
+          <button onClick={handlePrevPage} disabled={pageIndex === 0}>Previous</button>
+          <div>
+            Page {currentPage} of {totalPages}
+          </div>
+          <button onClick={handleNextPage} disabled={pageIndex + itemsPerPage >= sensorData.length}>Next</button>
+        </div>
       </div>
     </div>
   );

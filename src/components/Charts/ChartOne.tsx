@@ -1,6 +1,7 @@
 import { ApexOptions } from 'apexcharts';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
+// @ts-ignore
 import DBSourse from '../../data/api/db-sourse.js';
 
 // Definisi tipe data untuk konfigurasi pan
@@ -17,11 +18,11 @@ interface ExtendedApexOptions extends ApexOptions {
 
 // Menggunakan tipe data yang diperluas
 const options: ExtendedApexOptions = {
-  legend: {
-    show: false,
-    position: 'top',
-    horizontalAlign: 'left',
-  },
+  // legend: {
+  //   show: false,
+  //   position: 'top',
+  //   horizontalAlign: 'left',
+  // },
   colors: ['#3C50E0', '#80CAEE'],
   chart: {
     fontFamily: 'Satoshi, sans-serif',
@@ -70,7 +71,7 @@ const options: ExtendedApexOptions = {
     width: [2, 2],
     curve: 'straight',
   },
-  
+
   // labels: {
   //   show: false,
   //   position: "top",
@@ -83,14 +84,15 @@ const options: ExtendedApexOptions = {
     },
     yaxis: {
       lines: {
-        show: false,
+        show: true,
+        
       },
     },
   },
   dataLabels: {
     enabled: false,
   },
- markers: {
+  markers: {
     size: 0, // Menghilangkan titik bulat pada ujung line chart
     strokeColors: ['#3056D3', '#80CAEE'],
     strokeWidth: 3,
@@ -104,26 +106,26 @@ const options: ExtendedApexOptions = {
     },
   },
 
-fill: {
+  fill: {
     type: 'gradient', // Anda dapat menggunakan jenis 'color' atau 'gradient' tergantung pada preferensi Anda
     gradient: {
-        shade: 'light', // Anda dapat menyesuaikan bayangan warna dengan mengatur nilai ini ke 'dark' atau 'light'
-        type: 'vertical', // Anda dapat mengatur arah gradien sesuai kebutuhan Anda
-        shadeIntensity: 0.9, // Intensitas bayangan
-        gradientToColors: ['#3C50E0', '#80CAEE'], // Warna untuk gradien
-        inverseColors: true, // Untuk mengubah urutan warna gradien
-        opacityFrom: 0.9, // Opasitas awal
-        opacityTo: 0.2, // Opasitas akhir
-        stops: [0, 100], // Untuk mengatur posisi stop gradien
+      shade: 'light', 
+      type: 'vertical', // Anda dapat mengatur arah gradien sesuai kebutuhan Anda
+      shadeIntensity: 0.9, // Intensitas bayangan
+      gradientToColors: ['#3C50E0', '#80CAEE'], // Warna untuk gradien
+      inverseColors: true, // Untuk mengubah urutan warna gradien
+      opacityFrom: 0.9, // Opasitas awal
+      opacityTo: 0.1, // Opasitas akhir
+      stops: [0, 100], // Untuk mengatur posisi stop gradien
     }
-},
+  },
 
-xaxis: {
-  type: 'datetime', // Menggunakan tipe datetime untuk sumbu x
-  labels: {
-    datetimeUTC: false // Menonaktifkan UTC untuk label datetime
-  }
-},
+  xaxis: {
+    type: 'datetime', // Menggunakan tipe datetime untuk sumbu x
+    labels: {
+      datetimeUTC: false // Menonaktifkan UTC untuk label datetime
+    }
+  },
   yaxis: {
     title: {
       style: {
@@ -131,7 +133,7 @@ xaxis: {
       },
     },
     min: 0,
-    max: 100,
+    max: 10,
   },
 };
 
@@ -168,7 +170,7 @@ const ChartOne: React.FC = () => {
     const fetchDataAndUpdateState = async () => {
       try {
         const response = await DBSourse.allDataSensor(); // Fetch data from your API
-        console.log('Response:', response); // Log the response
+        // console.log('Response:', response); // Log the response
 
         // Check if response is an array and not empty
         if (!Array.isArray(response) || response.length === 0) {
@@ -189,26 +191,28 @@ const ChartOne: React.FC = () => {
           }
         });
 
+        // Memastikan nama sensor dan data-nilai yang sesuai dimasukkan ke dalam state series dengan benar
         setState(prevState => ({
           ...prevState,
           series: [
-            { name: 'PH', data: phData },
-            { name: 'NH3', data: nh3Data }
+            { name: 'PH', data: phData}, // Pastikan 'PH' sesuai dengan nama sensor dan phData sesuai dengan data-nilai PH
+            { name: 'NH3', data: nh3Data } // Pastikan 'NH3' sesuai dengan nama sensor dan nh3Data sesuai dengan data-nilai NH3
           ],
-          categories: categories // Assign categories array to state
+          categories: categories // Pastikan categories diisi dengan data yang benar
         }));
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-    const interval = setInterval(fetchDataAndUpdateState, 2000); 
+    // const interval = setInterval(fetchDataAndUpdateState, 2000); 
 
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
 
-    // fetchDataAndUpdateState();
+    fetchDataAndUpdateState();
   }, []);
 
-  
+
   const handleReset = () => {
     setState((prevState) => ({
       ...prevState,
@@ -256,24 +260,24 @@ const ChartOne: React.FC = () => {
 
       <div>
         <div id="chartOne" className="-ml-5">
-        <ReactApexChart
-      options={{
-        ...options,
-        xaxis: {
-          type: 'category',
-          categories: state.categories, // Assign categories from state
-          axisBorder: {
-            show: false,
-          },
-          axisTicks: {
-            show: false,
-          },
-        },
-      }}
-      series={state.series}
-      type="area"
-      height={335}
-    />
+          <ReactApexChart
+            options={{
+              ...options,
+              xaxis: {
+                type: 'category',
+                categories: state.categories, // Assign categories from state
+                axisBorder: {
+                  show: false,
+                },
+                axisTicks: {
+                  show: false,
+                },
+              },
+            }}
+            series={state.series}
+            type="area"
+            height={335}
+          />
         </div>
       </div>
 
