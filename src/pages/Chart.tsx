@@ -2,8 +2,9 @@ import React from 'react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import ChartOne from '../components/Charts/ChartOne';
 import { DefaultLayout } from '../layout/DefaultLayout';
-import ChartMain from '../components/Charts/MainCagartBar';
+// import ChartMain from '../components/Charts/MainCagartBar';
 import MainChartThree from '../components/Charts/MainChartThree';
+import ChartMain from '../components/Charts/ChartFilterBarDate';
 // import DefaultLayout from '../layout/DefaultLayout';
 
 const Chart: React.FC = () => {

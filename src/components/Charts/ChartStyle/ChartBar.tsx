@@ -4,65 +4,16 @@ import ReactApexChart from 'react-apexcharts';
 
 interface ChartBarProps {
   data: number[];
-  categories: string[];
+  categories: string[]; // Pastikan categories memuat detail waktu
   color: string;
+  seriesName: string;
 }
 
-const ChartBar: React.FC<ChartBarProps> = ({ data, categories, color }) => {
+const ChartBar: React.FC<ChartBarProps> = ({ data, categories, color, seriesName }) => {
   const options: ApexOptions = {
     colors: [color],
-    chart: {
-      fontFamily: 'Satoshi, sans-serif',
-      type: 'bar',
-      height: 350,
-      stacked: true,
-      toolbar: {
-        show: true,
-        tools: {
-          download: true, // Aktifkan ikon unduhan
-          selection: true, // Aktifkan ikon seleksi
-          zoom: true, // Aktifkan ikon zoom
-          zoomin: true, // Aktifkan ikon zoom in
-          zoomout: true, // Aktifkan ikon zoom out
-          pan: true, // Aktifkan ikon panning
-          reset: true, // Aktifkan ikon reset zoom
-        },
-      },
-      zoom: {
-        enabled: true,
-        type: 'x', // Aktifkan zooming hanya pada sumbu x
-      },
-      animations: {
-        enabled: false, // Matikan animasi saat menambahkan bar baru
-      },
-    },
-    responsive: [
-      {
-        breakpoint: 1536,
-        options: {
-          plotOptions: {
-            bar: {
-              borderRadius: 0,
-              columnWidth: '55%',
-            },
-          },
-        },
-      },
-    ],
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        borderRadius: 8,
-        columnWidth: '50%',
-        borderRadiusApplication: 'end',
-        borderRadiusWhenStacked: 'last',
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
     xaxis: {
-      categories: categories.slice(0,10),
+      categories: categories,
       labels: {
         rotate: -45,
         maxHeight: 100,
@@ -80,11 +31,26 @@ const ChartBar: React.FC<ChartBarProps> = ({ data, categories, color }) => {
       },
     },
     legend: {
-      show: false,
+      show: true,
+      labels: {
+        useSeriesColors: true,
+      },
     },
     fill: {
       opacity: 1,
     },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '50%',
+      },
+    },
+    series: [
+      {
+        name: seriesName,
+        data: data
+      }
+    ]
   };
 
   return (
@@ -92,7 +58,7 @@ const ChartBar: React.FC<ChartBarProps> = ({ data, categories, color }) => {
       <div id="chartBar">
         <ReactApexChart
           options={options}
-          series={[{ data: data.slice(0,10) }]}
+          series={options.series}
           type="bar"
           height={400}
         />
