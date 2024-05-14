@@ -16,18 +16,18 @@ const ECommerce: React.FC = () => {
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total Larutan PH" total="$3.456K" rate="0.43%" levelUp>
+        <CardDataStats title="Total Larutan PH" total="30.456 ph" rate="0.43%" levelUp>
           <GiTestTubes size={30} color='blue' className="fill-primary"/>
         </CardDataStats>
-        <CardDataStats title="Total NH4" total="$45,2K" rate="4.35%" levelUp>
+        <CardDataStats title="Total NH4" total="20.3 ppm" rate="4.35%" levelUp>
           <WiWindy size={50} color='blue' className=" fill-primary "/>
           {/* <FaFlask size={30} color='blue' className=" fill-primary "/> */}
         </CardDataStats>
-        <CardDataStats title="Rata Rata PH / Hari" total="2.450" rate="2.59%" levelUp>
-          <FaThermometerHalf size={30} color="blue" className="fill-primary"/>
+        <CardDataStats title="Rata Rata PH / Hari Ini" total="1.4 ph" rate="2.59%" levelUp>
+          <FaFlask size={30} color="blue" className="fill-primary"/>
       
         </CardDataStats>
-        <CardDataStats title="Rata Rata NH3 / Hari" total="3.456" rate="0.95%" levelDown>
+        <CardDataStats title="Rata Rata NH3 / Hari Ini" total="3.4 ppm" rate="0.95%" levelDown>
           <FaIndustry size={30} color="blue" className="fill-primary"/>
           
         </CardDataStats>

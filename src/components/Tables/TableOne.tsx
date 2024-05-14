@@ -110,7 +110,7 @@ const TableOne = () => {
           <div>
             Page {currentPage} of {totalPages}
           </div>
-          <button onClick={handleNextPage} disabled={pageIndex + itemsPerPage >= sensorData.length}>Next</button>
+          <button className="bg-indigo-600 py-3 px-7 rounded-md" onClick={handleNextPage} disabled={pageIndex + itemsPerPage >= sensorData.length}>Next</button>
         </div>
       </div>
     </div>
