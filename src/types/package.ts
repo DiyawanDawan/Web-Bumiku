@@ -1,6 +1,9 @@
+import React from "react";
+
 export type Package = {
-  name: string;
-  price: number;
-  invoiceDate: string;
+  no: number;
+  sesnorType: string;
+  update: string;
+  fileType: React.ReactNode;
   status: string;
 };

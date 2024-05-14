@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // @ts-ignore
 import DBSourse from '../../data/api/db-sourse.js';
+import LoadingSpiner from '../Spiner/Loading.js';
 
 interface SensorData {
   id: string;
@@ -12,16 +13,19 @@ interface SensorData {
 
 const TableOne = () => {
   const [sensorData, setSensorData] = useState<SensorData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [pageIndex, setPageIndex] = useState(0);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await DBSourse.allDataSensor();
         setSensorData(response);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching sensor data:', error);
+        setLoading(false);
       }
     };
 
@@ -29,7 +33,9 @@ const TableOne = () => {
   }, []);
 
   const handleNextPage = () => {
-    setPageIndex((prevIndex) => prevIndex + itemsPerPage);
+    if (pageIndex < (sensorData.length - itemsPerPage)) {
+      setPageIndex((prevIndex) => prevIndex + itemsPerPage);
+    }
   };
 
   const handlePrevPage = () => {
@@ -73,44 +79,63 @@ const TableOne = () => {
             </h5>
           </div>
         </div>
-
-        {visibleData.map((data, index) => (
-          <div
-            className={`grid grid-cols-3 sm:grid-cols-5 ${
-              index === sensorData.length - 1
-                ? ''
-                : 'border-b border-stroke dark:border-strokedark'
-            }`}
-            key={index}
-          >
-            <div className="flex items-center p-2.5 xl:p-5">
-              <p className="text-black dark:text-white">{index + 1 + pageIndex}</p>
+        {loading ? (
+          <LoadingSpiner />
+        ) : (
+          <>
+          {visibleData.map((data, index) => (
+            <div
+              className={`grid grid-cols-3 sm:grid-cols-5 ${
+                index === sensorData.length - 1
+                  ? ''
+                  : 'border-b border-stroke dark:border-strokedark'
+              }`}
+              key={index}
+            >
+              <div className="flex items-center p-2.5 xl:p-5">
+                <p className="text-black dark:text-white">{index + 1 + pageIndex}</p>
+              </div>
+  
+              <div className="flex items-center justify-center p-2.5 xl:p-5">
+                <p className="text-black dark:text-white">{data.sensorType}</p>
+              </div>
+  
+              <div className="flex items-center justify-center p-2.5 xl:p-5">
+                <p className="text-black dark:text-white">{data.value}</p>
+              </div>
+  
+              <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                <p className="text-black dark:text-white">{data.unit}</p>
+              </div>
+  
+              <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                <p className="text-black dark:text-white">{data.createdAt}</p>
+              </div>
             </div>
-
-            <div className="flex items-center justify-center p-2.5 xl:p-5">
-              <p className="text-black dark:text-white">{data.sensorType}</p>
-            </div>
-
-            <div className="flex items-center justify-center p-2.5 xl:p-5">
-              <p className="text-black dark:text-white">{data.value}</p>
-            </div>
-
-            <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-              <p className="text-black dark:text-white">{data.unit}</p>
-            </div>
-
-            <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-              <p className="text-black dark:text-white">{data.createdAt}</p>
-            </div>
-          </div>
-        ))}
+          ))}
+          </>
+          
+        )}
+     
 
         <div className="flex justify-between mt-4 m-4">
-          <button onClick={handlePrevPage} disabled={pageIndex === 0}>Previous</button>
+          <button
+            className={`bg-indigo-500 py-3 px-7 rounded-md outline-2 outline-blue-500/50 hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring focus:ring-violet-300 text-2xl ${pageIndex === 0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+            onClick={handlePrevPage}
+            disabled={pageIndex === 0}
+          >
+            Previous
+          </button>
           <div>
             Page {currentPage} of {totalPages}
           </div>
-          <button className="bg-indigo-600 py-3 px-7 rounded-md" onClick={handleNextPage} disabled={pageIndex + itemsPerPage >= sensorData.length}>Next</button>
+          <button
+            className={`bg-indigo-500 py-3 px-7 rounded-md outline-2 outline-blue-500/50 hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring focus:ring-violet-300 text-2xl ${pageIndex + itemsPerPage >= sensorData.length ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+            onClick={handleNextPage}
+            disabled={pageIndex + itemsPerPage >= sensorData.length}
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>
