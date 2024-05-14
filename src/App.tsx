@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
+import NotFound404 from './pages/404/NotFound';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -72,6 +73,16 @@ function App() {
             <>
               <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <Chart />
+            </>
+          }
+        />
+       
+        <Route
+          path="*"
+          element={
+            <>
+              <PageTitle title="Not Foun 404" />
+              <NotFound404 />
             </>
           }
         />

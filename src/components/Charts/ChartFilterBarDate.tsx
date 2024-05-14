@@ -1,5 +1,3 @@
-
-// ChartMain.tsx
 import React, { useEffect, useState } from 'react';
 import ChartTwo from './ChartTwo';
 // @ts-ignore
@@ -40,23 +38,10 @@ const ChartMain: React.FC = () => {
     return data.map(item => item.value);
   };
   const extractCategories = (data: any[]) => {
-    return data.map(item => {
-      // Pastikan createdAt memiliki format 'YYYY-MM-DD HH:mm:ss'
-      const dateParts = item.createdAt.split(' ');
-      if (dateParts.length > 0) {
-        return dateParts[0];
-      } else {
-        // Jika format tidak sesuai, kembalikan string kosong atau nilai default lainnya
-        return ""; // Atau nilai default lainnya
-      }
-    });
+    return data.map(item => item.createdAt);
   };
-  
-
-  
 
   return (
-
     <>
       <ChartTwo
         data={extractData(nh3Data)}
