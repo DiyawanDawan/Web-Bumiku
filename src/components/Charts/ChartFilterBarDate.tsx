@@ -54,7 +54,7 @@ const ChartMain: React.FC = () => {
       <ChartTwo
         data={extractData(phData)}
         categories={extractCategories(phData)}
-        color="#80CAEE"
+        color="#f4a261"
         selectedDate={selectedPhDate}
         handleFilterChange={setSelectedPhDate} // Kirim prop handleFilterChange ke ChartTwo
         sensorType="PH"

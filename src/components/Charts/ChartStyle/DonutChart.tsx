@@ -4,16 +4,17 @@ import { ApexOptions } from 'apexcharts';
 
 interface DonutChartProps {
   series: number[];
+  labels: string[];
 }
 
-const DonutChart: React.FC<DonutChartProps> = ({ series }) => {
+const DonutChart: React.FC<DonutChartProps> = ({ series, labels }) => {
   const options: ApexOptions = {
     chart: {
       fontFamily: 'Satoshi, sans-serif',
       type: 'donut',
     },
-    colors: ['#3C50E0', '#0FADCF'],
-    labels: ['NH3', 'PH'],
+    colors: ['#fcbf49', '#0077b6'],
+    labels: labels,
     legend: {
       show: false,
       position: 'bottom',
@@ -21,7 +22,7 @@ const DonutChart: React.FC<DonutChartProps> = ({ series }) => {
     plotOptions: {
       pie: {
         donut: {
-          size: '65%',
+          size: '40%',
           background: 'transparent',
         },
       },
@@ -32,7 +33,7 @@ const DonutChart: React.FC<DonutChartProps> = ({ series }) => {
   };
 
   return (
-    <div id="chartThree" className="mx-auto flex justify-center">
+    <div id="chartThree" className="mx-auto flex justify-center ">
       <ReactApexChart options={options} series={series} type="donut" />
     </div>
   );

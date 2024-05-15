@@ -12,6 +12,7 @@ interface ChartBarProps {
 const ChartBar: React.FC<ChartBarProps> = ({ data, categories, color, seriesName }) => {
   const options: ApexOptions = {
     colors: [color],
+    
     xaxis: {
       categories: categories,
       labels: {
@@ -39,23 +40,26 @@ const ChartBar: React.FC<ChartBarProps> = ({ data, categories, color, seriesName
     fill: {
       opacity: 1,
     },
+    
     plotOptions: {
       bar: {
         horizontal: false,
         columnWidth: '50%',
       },
     },
+    
     series: [
       {
         name: seriesName,
         data: data
-      }
+      },
+      
     ]
   };
 
   return (
     <div>
-      <div id="chartBar">
+      <div className="border-indigo-700 border-2 border-solid m-3 p-4">
         <ReactApexChart
           options={options}
           series={options.series}

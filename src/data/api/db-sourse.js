@@ -19,6 +19,12 @@
             // console.log('data', json.data);
             return json.data;
         }
+        static async countDataSensor() {
+            const response = await fetch(API_ENDPOINT.COUNT_DATA)
+            const json = await response.json()
+            // console.log('data res', json.counts);
+            return json.counts;
+        }
 
         static async allsDataSensorWithDay( sensorType, tanggal) {
             const response = await fetch(API_ENDPOINT.WITH_DAY(tanggal, sensorType))

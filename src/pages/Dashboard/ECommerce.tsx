@@ -2,7 +2,6 @@
 import { FaFlask, FaThermometerHalf, FaIndustry } from 'react-icons/fa';
 import { GiTestTubes } from 'react-icons/gi';
 import { WiWindy } from 'react-icons/wi';
-
 import React from 'react';
 
 import CardDataStats from '../../components/CardDataStats';

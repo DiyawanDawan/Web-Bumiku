@@ -50,3 +50,4 @@ const ChartTwo: React.FC<ChartTwoProps> = ({ data, categories, color, selectedDa
 };
 
 export default ChartTwo;
+

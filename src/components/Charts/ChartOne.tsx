@@ -1,53 +1,42 @@
 import { ApexOptions } from 'apexcharts';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import LoadingSpiner from '../Spiner/Loading';
 // @ts-ignore
 import DBSourse from '../../data/api/db-sourse.js';
+import ButtonCahart from './ButtonCahart.js';
 
-// Definisi tipe data untuk konfigurasi pan
 interface PanOptions {
   enabled: boolean;
 }
 
-// Memperbarui tipe data ApexOptions untuk menyertakan properti pan
 interface ExtendedApexOptions extends ApexOptions {
   zoom?: {
     pan?: PanOptions;
   };
 }
 
-// Menggunakan tipe data yang diperluas
 const options: ExtendedApexOptions = {
-  // legend: {
-  //   show: false,
-  //   position: 'top',
-  //   horizontalAlign: 'left',
-  // },
-  colors: ['#3C50E0', '#80CAEE'],
+  colors: ['#f4a261', '#0077b6'],
   chart: {
+    // foreColor: '#ccc',
     fontFamily: 'Satoshi, sans-serif',
-    height: 335,
-    type: 'area',
-    dropShadow: {
-      enabled: true,
-      color: '#623CEA14',
-      top: 10,
-      blur: 4,
-      left: 0,
-      opacity: 0.5,
-    },
+      height: 335,
+      type: 'area',
+      dropShadow: {
+        enabled: true,
+        color: '#eae2b7', 
+        top: 20,          
+        left: 0,        
+        blur: 4,       
+        opacity: 0.3,   
+      },
     toolbar: {
-      show: true, // Menampilkan toolbar untuk zooming dan panning
+      show: true,
     },
-    zoom: { // Mengaktifkan zooming dan konfigurasi pan di sini
+    zoom: {
       enabled: true,
-      // pan: {
-      //   enabled: true,
-      // }
     },
-    // toolbar: {
-    //   show: false,
-    // },
   },
   responsive: [
     {
@@ -68,15 +57,11 @@ const options: ExtendedApexOptions = {
     },
   ],
   stroke: {
-    width: [2, 2],
+    width: [3, 3],
     curve: 'straight',
   },
-
-  // labels: {
-  //   show: false,
-  //   position: "top",
-  // },
   grid: {
+    borderColor: "#535A6C",
     xaxis: {
       lines: {
         show: true,
@@ -85,7 +70,6 @@ const options: ExtendedApexOptions = {
     yaxis: {
       lines: {
         show: true,
-        
       },
     },
   },
@@ -93,8 +77,8 @@ const options: ExtendedApexOptions = {
     enabled: false,
   },
   markers: {
-    size: 0, // Menghilangkan titik bulat pada ujung line chart
-    strokeColors: ['#3056D3', '#80CAEE'],
+    size: 0,
+    strokeColors: ['#0077b6', '#e09f3e'],
     strokeWidth: 3,
     strokeOpacity: 0.9,
     strokeDashArray: 0,
@@ -105,25 +89,27 @@ const options: ExtendedApexOptions = {
       sizeOffset: 5,
     },
   },
-
   fill: {
-    type: 'gradient', // Anda dapat menggunakan jenis 'color' atau 'gradient' tergantung pada preferensi Anda
+    type: 'gradient',
     gradient: {
-      shade: 'light', 
-      type: 'vertical', // Anda dapat mengatur arah gradien sesuai kebutuhan Anda
-      shadeIntensity: 0.9, // Intensitas bayangan
-      gradientToColors: ['#3C50E0', '#80CAEE'], // Warna untuk gradien
-      inverseColors: true, // Untuk mengubah urutan warna gradien
-      opacityFrom: 0.9, // Opasitas awal
-      opacityTo: 0.1, // Opasitas akhir
-      stops: [0, 100], // Untuk mengatur posisi stop gradien
+      shade: 'light',
+      type: 'vertical',
+      shadeIntensity: 0.9,
+      gradientToColors: ['#3C50E0', '#80CAEE'],
+      inverseColors: true,
+      opacityFrom: 0.7,    // Mengurangi opacity dari 0.9 ke 0.7 agar lebih terangkat
+      opacityTo: 0.2,      // Mengurangi opacity dari 0.1 ke 0.3 agar lebih terangkat
+      stops: [0, 100],
     }
   },
-
   xaxis: {
-    type: 'datetime', // Menggunakan tipe datetime untuk sumbu x
+    type: 'datetime',
     labels: {
-      datetimeUTC: false // Menonaktifkan UTC untuk label datetime
+      datetimeUTC: false,
+      formatter: (value: string) => {
+        const date = new Date(value);
+        return date.toLocaleDateString();
+      }
     }
   },
   yaxis: {
@@ -132,8 +118,15 @@ const options: ExtendedApexOptions = {
         fontSize: '0px',
       },
     },
-    min: 0,
-    max: 10,
+     min: 0
+    
+  },
+  tooltip: {
+    y: {
+        formatter: (value: number) => {
+            return value.toString(); // Display the value as it is
+          }
+    }
   },
 };
 
@@ -150,6 +143,7 @@ interface ChartOneState {
 }
 
 const ChartOne: React.FC = () => {
+  const [loading, setLoading] = useState(true);
   const [state, setState] = useState<{
     series: { name: string; data: number[] }[];
     categories: string[];
@@ -157,33 +151,30 @@ const ChartOne: React.FC = () => {
     series: [
       {
         name: 'PH',
-        data: [] // Initial empty array
+        data: []
       },
       {
         name: 'NH3',
-        data: [] // Initial empty array
+        data: []
       }
     ],
-    categories: [] // Initial empty array for categories
+    categories: []
   });
+
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
       try {
-        const response = await DBSourse.allDataSensor(); // Fetch data from your API
-        // console.log('Response:', response); // Log the response
-
-        // Check if response is an array and not empty
+        const response = await DBSourse.allDataSensor();
         if (!Array.isArray(response) || response.length === 0) {
           throw new Error('Invalid response format');
         }
 
-        const phData: number[] = []; // Define type for phData
-        const nh3Data: number[] = []; // Define type for nh3Data
-        const categories: string[] = []; // Define type for categories
+        const phData: number[] = [];
+        const nh3Data: number[] = [];
+        const categories: string[] = [];
 
         response.forEach(item => {
-          categories.push(item.createdAt); // Push createdAt to categories array
-
+          categories.push(item.createdAt);
           if (item.sensorType === 'PH') {
             phData.push(item.value);
           } else if (item.sensorType === 'NH3') {
@@ -191,27 +182,23 @@ const ChartOne: React.FC = () => {
           }
         });
 
-        // Memastikan nama sensor dan data-nilai yang sesuai dimasukkan ke dalam state series dengan benar
         setState(prevState => ({
           ...prevState,
           series: [
-            { name: 'PH', data: phData}, // Pastikan 'PH' sesuai dengan nama sensor dan phData sesuai dengan data-nilai PH
-            { name: 'NH3', data: nh3Data } // Pastikan 'NH3' sesuai dengan nama sensor dan nh3Data sesuai dengan data-nilai NH3
+            { name: 'PH', data: phData },
+            { name: 'NH3', data: nh3Data }
           ],
-          categories: categories // Pastikan categories diisi dengan data yang benar
+          categories: categories
         }));
-
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // Set loading to false when data fetching is complete
       }
     };
-    // const interval = setInterval(fetchDataAndUpdateState, 2000); 
-
-    // return () => clearInterval(interval);
 
     fetchDataAndUpdateState();
   }, []);
-
 
   const handleReset = () => {
     setState((prevState) => ({
@@ -223,64 +210,35 @@ const ChartOne: React.FC = () => {
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
       <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
-        <div className="flex w-full flex-wrap gap-3 sm:gap-5">
-          <div className="flex min-w-47.5">
-            <span className="mt-1 mr-2 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-primary">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-primary"></span>
-            </span>
-            <div className="w-full">
-              <p className="font-semibold text-primary">PH</p>
-              <p className="text-sm font-medium">12.04.2022 - 12.05.2022</p>
-            </div>
-          </div>
-          <div className="flex min-w-47.5">
-            <span className="mt-1 mr-2 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-secondary">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-secondary"></span>
-            </span>
-            <div className="w-full">
-              <p className="font-semibold text-secondary">NH3</p>
-              <p className="text-sm font-medium">12.04.2022 - 12.05.2022</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full max-w-45 justify-end">
-          <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
-            <button className="rounded bg-white py-1 px-3 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark">
-              Day
-            </button>
-            <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Week
-            </button>
-            <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Month
-            </button>
-          </div>
-        </div>
+       <ButtonCahart />
       </div>
 
       <div>
-        <div id="chartOne" className="-ml-5">
-          <ReactApexChart
-            options={{
-              ...options,
-              xaxis: {
-                type: 'category',
-                categories: state.categories, // Assign categories from state
-                axisBorder: {
-                  show: false,
+        <div id="chartOne" className="-ml-2 border-indigo-700 border-2 border-solid m-3 p-4">
+          {loading ? ( // Display loading spinner if loading is true
+            <LoadingSpiner />
+          ) : (
+            <ReactApexChart
+              options={{
+                ...options,
+                xaxis: {
+                  type: 'category',
+                  categories: state.categories,
+                  axisBorder: {
+                    show: false,
+                  },
+                  axisTicks: {
+                    show: false,
+                  },
                 },
-                axisTicks: {
-                  show: false,
-                },
-              },
-            }}
-            series={state.series}
-            type="area"
-            height={335}
-          />
+              }}
+              series={state.series}
+              type="area"
+              height={335}
+            />
+          )}
         </div>
       </div>
-
     </div>
   );
 };
