@@ -2,8 +2,9 @@ import React from "react";
 
 export type Package = {
   no: number;
-  sesnorType: string;
+  sensorType: string;
   update: string;
-  fileType: React.ReactNode;
+  fileType: string; // fileType sebaiknya bertipe string karena Anda menyimpan nilai 'pdf' sebagai string
   status: string;
+  pdfUrl: string; // Ubah pdfUrl menjadi bertipe string
 };

@@ -47,95 +47,71 @@ const TableOne = () => {
   const totalPages = Math.ceil(sensorData.length / itemsPerPage);
 
   return (
-    <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 pb-10">
-      <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-        Detection Sensor
-      </h4>
-      <div className="flex flex-col">
-        <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
-          <div className="p-2.5 xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              No
-            </h5>
+    <div className="overflow-x-auto">
+      <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 pb-10">
+        <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+          Detection Sensor
+        </h4>
+        <div className="flex flex-col">
+          <div className="overflow-x-auto">
+            <table className="w-full table-auto ">
+              <thead>
+                <tr className="bg-gray-2  text-left dark:bg-slate-500 border-stroke border-b-2">
+                  <th className="p-2.5 xl:p-5">No</th>
+                  <th className="p-2.5 text-center xl:p-5">DETECTION</th>
+                  <th className="p-2.5 text-center sm:p-2 xl:p-5">VALUE (ppm pH)</th>
+                  <th className="p-2.5 text-center xl:p-5">UNIT</th>
+                  <th className="p-2.5 text-center xl:p-5">CREATED AT</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr>
+                    <td colSpan={5} className="text-center py-4">
+                      <LoadingSpiner />
+                    </td>
+                  </tr>
+                ) : (
+                  <>
+                    {visibleData.map((data, index) => (
+                      <tr
+                        key={index}
+                        className={`${
+                          index === visibleData.length - 1 ? '' : 'border-b border-stroke  dark:border-indigo-200'
+                        }`}
+                      >
+                        <td className="p-2.5 xl:p-5">{index + 1 + pageIndex}</td>
+                        <td className="p-2.5 text-center xl:p-5">{data.sensorType}</td>
+                        <td className="p-2.5 text-center xl:p-5">{data.value}</td>
+                        <td className="p-2.5 text-center xl:p-5">{data.unit}</td>
+                        <td className="p-2.5 text-center xl:p-5 ">{data.createdAt}</td>
+                      </tr>
+                    ))}
+                  </>
+                )}
+              </tbody>
+            </table>
           </div>
-          <div className="p-2.5 text-center xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              DETECTION
-            </h5>
-          </div>
-          <div className="p-2.5 text-center xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              VALUE (ppm pH)
-            </h5>
-          </div>
-          <div className="hidden p-2.5 text-center sm:block xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              UNIT
-            </h5>
-          </div>
-          <div className="hidden p-2.5 text-center sm:block xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              CREATED AT
-            </h5>
-          </div>
-        </div>
-        {loading ? (
-          <LoadingSpiner />
-        ) : (
-          <>
-          {visibleData.map((data, index) => (
-            <div
-              className={`grid grid-cols-3 sm:grid-cols-5 ${
-                index === sensorData.length - 1
-                  ? ''
-                  : 'border-b border-stroke dark:border-strokedark'
-              }`}
-              key={index}
-            >
-              <div className="flex items-center p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{index + 1 + pageIndex}</p>
-              </div>
-  
-              <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{data.sensorType}</p>
-              </div>
-  
-              <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <p className="text-black dark:text-white">{data.value}</p>
-              </div>
-  
-              <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <p className="text-black dark:text-white">{data.unit}</p>
-              </div>
-  
-              <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <p className="text-black dark:text-white">{data.createdAt}</p>
-              </div>
-            </div>
-          ))}
-          </>
-          
-        )}
-     
 
-        <div className="flex justify-between mt-4 m-4">
-          <button
-            className={`bg-indigo-500 py-3 px-7 rounded-md outline-2 outline-blue-500/50 hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring focus:ring-violet-300 text-2xl ${pageIndex === 0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-            onClick={handlePrevPage}
-            disabled={pageIndex === 0}
-          >
-            Previous
-          </button>
-          <div>
-            Page {currentPage} of {totalPages}
+          <div className="flex justify-between items-center mt-4 m-4">
+            <button
+              className={`bg-indigo-500 py-2 px-3 sm:py-3 sm:px-5 rounded-md outline-2 outline-blue-500/50 hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring focus:ring-violet-300 text-lg ${pageIndex === 0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+              onClick={handlePrevPage}
+              disabled={pageIndex === 0}
+            >
+              Previous
+            </button>
+            <div>
+              Page {currentPage} of {totalPages}
+            </div>
+            <button
+              className={`bg-indigo-500 py-2 px-3 sm:py-3 sm:px-5 rounded-md outline-2 outline-blue-500/50 hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring focus:ring-violet-300 text-lg  ${pageIndex + itemsPerPage >= sensorData.length ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+              onClick={handleNextPage}
+              disabled={pageIndex + itemsPerPage >= sensorData.length}
+            >
+              Next
+            </button>
           </div>
-          <button
-            className={`bg-indigo-500 py-3 px-7 rounded-md outline-2 outline-blue-500/50 hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring focus:ring-violet-300 text-2xl ${pageIndex + itemsPerPage >= sensorData.length ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-            onClick={handleNextPage}
-            disabled={pageIndex + itemsPerPage >= sensorData.length}
-          >
-            Next
-          </button>
         </div>
       </div>
     </div>
