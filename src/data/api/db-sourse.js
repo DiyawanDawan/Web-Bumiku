@@ -32,6 +32,12 @@
             console.log('data', json.data);
             return json.data;
         }
+        static async rataRataDataPPMNH3( sensorType, tanggal) {
+            const response = await fetch(API_ENDPOINT.WITH_DAY_EVERAGE(tanggal, sensorType))
+            const json = await response.json()
+            console.log('data', json.data);
+            return json.data;
+        }
     }
 
     export default DBSourse

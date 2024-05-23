@@ -95,7 +95,7 @@ const TableOne = () => {
 
           <div className="flex justify-between items-center mt-4 m-4">
             <button
-              className={`bg-indigo-500 py-2 px-3 sm:py-3 sm:px-5 rounded-md outline-2 outline-blue-500/50 hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring focus:ring-violet-300 text-lg ${pageIndex === 0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+              className={`bg-indigo-500 py-1 px-3 sm:py-2 sm:px-5 rounded-md outline-2 outline-blue-500/50 hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring focus:ring-violet-300 text-lg text-whiten ${pageIndex === 0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
               onClick={handlePrevPage}
               disabled={pageIndex === 0}
             >
@@ -105,7 +105,7 @@ const TableOne = () => {
               Page {currentPage} of {totalPages}
             </div>
             <button
-              className={`bg-indigo-500 py-2 px-3 sm:py-3 sm:px-5 rounded-md outline-2 outline-blue-500/50 hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring focus:ring-violet-300 text-lg  ${pageIndex + itemsPerPage >= sensorData.length ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+              className={`bg-indigo-500 py-1 px-3 sm:py-2 sm:px-5 rounded-md outline-2 outline-blue-500/50 hover:bg-indigo-600 active:bg-indigo-800 focus:outline-none focus:ring focus:ring-violet-300 text-lg text-whiten  ${pageIndex + itemsPerPage >= sensorData.length ? 'cursor-not-allowed' : 'cursor-pointer'}`}
               onClick={handleNextPage}
               disabled={pageIndex + itemsPerPage >= sensorData.length}
             >

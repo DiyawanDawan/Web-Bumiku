@@ -1,5 +1,5 @@
 import { ApexOptions } from 'apexcharts';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import LoadingSpiner from '../Spiner/Loading';
 // @ts-ignore
@@ -58,7 +58,8 @@ const options: ExtendedApexOptions = {
   ],
   stroke: {
     width: [3, 3],
-    curve: 'straight',
+    // curve: 'straight',
+    curve: 'smooth',
   },
   grid: {
     borderColor: "#535A6C",
@@ -144,6 +145,8 @@ interface ChartOneState {
 
 const ChartOne: React.FC = () => {
   const [loading, setLoading] = useState(true);
+  const chartRef = useRef<any>(null); // Ref for the chart component
+
   const [state, setState] = useState<{
     series: { name: string; data: number[] }[];
     categories: string[];
@@ -190,6 +193,12 @@ const ChartOne: React.FC = () => {
           ],
           categories: categories
         }));
+        if (chartRef.current) {
+          chartRef.current.updateSeries([
+            { name: 'PH', data: phData },
+            { name: 'NH3', data: nh3Data }
+          ]);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -235,6 +244,7 @@ const ChartOne: React.FC = () => {
               series={state.series}
               type="area"
               height={335}
+              ref={chartRef}
             />
           )}
         </div>

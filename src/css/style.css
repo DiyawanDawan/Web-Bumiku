@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.filter-container {
+  margin-top: 10px; /* Adjust as necessary */
+}
+
 @layer base {
   body {
     @apply font-satoshi font-normal text-base text-body bg-whiten relative z-1;
