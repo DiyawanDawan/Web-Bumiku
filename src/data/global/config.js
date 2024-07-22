@@ -1,5 +1,6 @@
 const CONFIG = {
-    BASE_URL: 'http://127.0.0.1:3000/'
+    // BASE_URL: 'https://cintabumi.zapto.org/'
+    BASE_URL: 'http://localhost:3000/'
 }
 
 export default CONFIG;
