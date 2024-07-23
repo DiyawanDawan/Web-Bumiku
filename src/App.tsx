@@ -33,7 +33,7 @@ function App() {
           index
           element={
             <>
-              <PageTitle title="Dashboard | Cinta Bumi" />
+              <PageTitle title="Dashboard | Cinta Dunia" />
               <DashboardPage />
             </>
           }
@@ -43,7 +43,7 @@ function App() {
           path="/profile"
           element={
             <>
-              <PageTitle title="Profile | Cinta Bumi" />
+              <PageTitle title="Profile | Cinta Dunia" />
               <Profile />
             </>
           }
@@ -54,7 +54,7 @@ function App() {
           path="/tables"
           element={
             <>
-              <PageTitle title="Tables | Cinta Bumi" />
+              <PageTitle title="Tables | Cinta Dunia" />
               <Tables />
             </>
           }
@@ -63,7 +63,7 @@ function App() {
           path="/settings"
           element={
             <>
-              <PageTitle title="Settings | Cinta Bumi" />
+              <PageTitle title="Settings | Cinta Dunia" />
               <Settings />
             </>
           }
@@ -72,7 +72,7 @@ function App() {
           path="/chart"
           element={
             <>
-              <PageTitle title="Basic Chart | Cinta Bumi" />
+              <PageTitle title="Basic Chart | Cinta Dunia" />
               <Chart />
             </>
           }

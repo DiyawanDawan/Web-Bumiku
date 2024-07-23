@@ -11,7 +11,7 @@ import { DefaultLayout } from '../../layout/DefaultLayout';
 import MainChartThree from '../../components/Charts/MainChartThree';
 import ChartMain2 from '../../components/Charts/ChartFilterBarDate';
 import CardState from '../../components/Card/CardSatate';
-import Keterangan from '../../components/Charts/Keterangan';
+import Keterangan from '../../components/Tables/Keterangan';
 
 const DashboardPage: React.FC = () => {
   return (

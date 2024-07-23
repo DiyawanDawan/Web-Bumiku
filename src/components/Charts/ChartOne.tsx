@@ -217,13 +217,13 @@ const ChartOne: React.FC = () => {
   handleReset;
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
+    <div className="col-span-12 rounded-sm border border-stroke border-gray-100 duration-100 dark:border-indigo-300 bg-white px-5 pt-7.5 pb-5 shadow-default  dark:bg-boxdark sm:px-7.5 xl:col-span-8">
       <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
        <ButtonCahart />
       </div>
 
       <div>
-        <div id="chartOne" className="-ml-2 border-indigo-700 border-2 border-solid m-3 p-4">
+        <div id="chartOne" className="-ml-2  border dark:border-strokedark border-solid m-3 p-4">
           {loading ? ( // Display loading spinner if loading is true
             <LoadingSpiner />
           ) : (

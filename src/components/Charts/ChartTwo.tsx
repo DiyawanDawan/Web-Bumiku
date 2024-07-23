@@ -28,7 +28,7 @@ const ChartTwo: React.FC<ChartTwoProps> = ({ data, categories, color, selectedDa
     return () => clearTimeout(timer);
   }, [selectedDate]);
   return (
-    <div className="col-span-12 p-4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-6">
+    <div className="col-span-12 p-4 rounded-sm border border-stroke bg-white duration-100 border-gray-100 shadow-lg dark:border-indigo-300 dark:bg-boxdark xl:col-span-6">
       <div className="mb-4 items-center justify-between gap-4 sm:flex">
         <h4 className="text-xl font-semibold text-black dark:text-white mb-4">{sensorType} pada {selectedDate}</h4>
         <Filter handleFilterChange={handleFilterChange} /> {/* Masukkan komponen Filter */}

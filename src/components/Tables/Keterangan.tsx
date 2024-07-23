@@ -3,7 +3,11 @@ import React from 'react';
 const Keterangan: React.FC = () => {
     return (
         <div className="overflow-x-auto py-6 rounded-lg">
-            <table className="min-w-full bg-slate-400 border border-gray-100 shadow-lg dark:border-indigo-300">
+            <div className="rounded-sm border border-stroke border-gray-100 shadow-lg duration-200 dark:border-indigo-300 bg-white px-5 pt-6  dark:bg-boxdark sm:px-7.5 xl:pb-1 pb-10">
+        <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+          Detection Sensor
+        </h4>
+            <table className="min-w-full bg-slate-400 border border-gray-100 shadow-lg dark:border-indigo-300 mb-4">
                 <thead className="bg-gray-200 border-bbg-gray-200 rounded-t-lg dark:bg-gray-700 dark:border-b-2 dark:border-slate-300">
                     <tr>
                         <th className="px-6 py-5 text-left text-xs font-medium text-gray-3 uppercase tracking-wider">Rentang pH</th>
@@ -39,6 +43,7 @@ const Keterangan: React.FC = () => {
                     </tr>
                 </tbody>
             </table>
+        </div>
         </div>
     );
 };
