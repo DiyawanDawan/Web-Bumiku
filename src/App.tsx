@@ -4,14 +4,18 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import Chart from './pages/Chart';
-import ECommerce from './pages/Dashboard/DashboardPage';
+import DashboardPage from './pages/Dashboard/DashboardPage';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Tables';
-import Alerts from './pages/UiElements/Alerts';
 import NotFound404 from './pages/404/NotFound';
-import DashboardPage from './pages/Dashboard/DashboardPage';
-
+import SignIn from './pages/Authentication/SignIn';
+import SignUp from './pages/Authentication/SignUp';
+import ProtectedRoute from './components/ProtectedRoute';
+import PublicRoute from './components/PublicRoute';
+import { AuthLayout } from './layout/auth/AuthLayout';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
@@ -28,9 +32,35 @@ function App() {
     <Loader />
   ) : (
     <>
-      <Routes>
+     <ToastContainer />
+    <Routes>
+      {/* Public Routes */}
+      <Route element={<PublicRoute />}>
+  
         <Route
-          index
+          path="/signin"
+          element={
+            <AuthLayout>
+              <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <SignIn />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <AuthLayout>
+              <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <SignUp />
+            </AuthLayout>
+          }
+        />
+      </Route>
+
+      {/* Protected Routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path="/"
           element={
             <>
               <PageTitle title="Dashboard | Cinta Dunia" />
@@ -38,7 +68,6 @@ function App() {
             </>
           }
         />
-      
         <Route
           path="/profile"
           element={
@@ -48,8 +77,6 @@ function App() {
             </>
           }
         />
-       
-       
         <Route
           path="/tables"
           element={
@@ -77,36 +104,19 @@ function App() {
             </>
           }
         />
-       
-        <Route
-          path="*"
-          element={
-            <>
-              <PageTitle title="Not Foun 404" />
-              <NotFound404 />
-            </>
-          }
-        />
-       
-        {/* <Route
-          path="/auth/signin"
-          element={
-            <>
-              <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <SignIn />
-            </>
-          }
-        />
-        <Route
-          path="/auth/signup"
-          element={
-            <>
-              <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <SignUp />
-            </>
-          }
-        /> */}
-      </Routes>
+      </Route>
+
+      {/* Not Found Route */}
+      <Route
+        path="*"
+        element={
+          <AuthLayout>
+            <PageTitle title="Not Found 404" />
+            <NotFound404 />
+          </AuthLayout>
+        }
+      />
+    </Routes>
     </>
   );
 }

@@ -1,13 +1,41 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaUserCircle } from "react-icons/fa";
-import { FaPhoneSquare } from "react-icons/fa";
+import { Link, useNavigate } from 'react-router-dom';
+import { FaUserCircle, FaPhoneSquare } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { CiLogout } from "react-icons/ci";
+import { BsChevronDoubleDown } from "react-icons/bs";
+import { toast, ToastContainer } from "react-toastify";
+import Swal from 'sweetalert2';
+import 'react-toastify/dist/ReactToastify.css';
 import UserOne from '../../images/user/user-01.png';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Apa kau yakin?",
+      text: "Anda tidak akan dapat mengembalikannya!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, keluar!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Keluar!",
+          text: "Anda telah keluar.",
+          icon: "success"
+        }).then(() => {
+    localStorage.removeItem('authToken');
+    toast.success('Anda telah berhasil keluar');
+    navigate('/signin');
+  });
+}
+});
+  };
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -26,7 +54,7 @@ const DropdownUser = () => {
     };
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
-  });
+  }, [dropdownOpen]);
 
   // close if the esc key is pressed
   useEffect(() => {
@@ -36,7 +64,7 @@ const DropdownUser = () => {
     };
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
-  });
+  }, [dropdownOpen]);
 
   return (
     <div className="relative">
@@ -57,21 +85,7 @@ const DropdownUser = () => {
           <img src={UserOne} alt="User" />
         </span>
 
-        <svg
-          className="hidden fill-current sm:block"
-          width="12"
-          height="8"
-          viewBox="0 0 12 8"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M0.410765 0.910734C0.736202 0.585297 1.26384 0.585297 1.58928 0.910734L6.00002 5.32148L10.4108 0.910734C10.7362 0.585297 11.2638 0.585297 11.5893 0.910734C11.9147 1.23617 11.9147 1.76381 11.5893 2.08924L6.58928 7.08924C6.26384 7.41468 5.7362 7.41468 5.41077 7.08924L0.410765 2.08924C0.0853277 1.76381 0.0853277 1.23617 0.410765 0.910734Z"
-            fill=""
-          />
-        </svg>
+        <BsChevronDoubleDown size={28}/>
       </Link>
 
       {/* <!-- Dropdown Start --> */}
@@ -80,7 +94,7 @@ const DropdownUser = () => {
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
         className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
-          dropdownOpen === true ? 'block' : 'hidden'
+          dropdownOpen ? 'block' : 'hidden'
         }`}
       >
         <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
@@ -89,7 +103,7 @@ const DropdownUser = () => {
               to="/profile"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
-            <FaUserCircle size={28}/>
+              <FaUserCircle size={28}/>
               My Profile
             </Link>
           </li>
@@ -108,17 +122,18 @@ const DropdownUser = () => {
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
              <IoSettingsSharp size={28}/>
-              
               Account Settings
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
-        <CiLogout size={28}/>
+        <button onClick={handleLogout} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <CiLogout size={28}/>
           Log Out
         </button>
       </div>
       {/* <!-- Dropdown End --> */}
+      
+      <ToastContainer />
     </div>
   );
 };

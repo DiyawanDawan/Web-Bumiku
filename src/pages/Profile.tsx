@@ -2,12 +2,13 @@ import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 // import DefaultLayout from '../layout/DefaultLayout.1';
 import CoverOne from '../images/cover/cover-01.png';
 import userSix from '../images/user/user-06.png';
-import { Link } from 'react-router-dom';
 import { DefaultLayout } from '../layout/DefaultLayout';
 import { FaLinkedin, FaGithub, FaInstagram, FaFacebook } from 'react-icons/fa';
 import { FaMedium } from "react-icons/fa6";
 import { TbWorldWww } from "react-icons/tb";
 const Profile = () => {
+
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Profile" />
