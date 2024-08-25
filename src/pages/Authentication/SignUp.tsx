@@ -3,8 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-
-import { FcGoogle } from "react-icons/fc";
 import { toast } from 'react-toastify';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/icon-128x128-removebg-preview.png';
@@ -15,12 +13,14 @@ import DBSourse from '../../data/api/db-sourse.js';
 
 const SignUp: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [gender, setGender] = useState('');
+  const [fullName, setFullName] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -33,45 +33,46 @@ const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
     setConfirmPasswordVisible(!confirmPasswordVisible);
   };
   
-  const validatePassword = (password: string) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return regex.test(password);
-  };
+
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (password !== confirmPassword) {
       toast.error("Kata sandi tidak cocok");
       setError("Kata sandi tidak cocok");
       setSuccess(null);
       return;
     }
-
-    if (!validatePassword(password)) {
-      toast.error("Kata sandi harus terdiri dari setidaknya 8 karakter dan mengandung setidaknya satu huruf besar, satu huruf kecil, satu angka, dan satu karakter khusus.");
-      setError("Kata sandi harus terdiri dari setidaknya 8 karakter dan mengandung setidaknya satu huruf besar, satu huruf kecil, satu angka, dan satu karakter khusus.");
-      setSuccess(null);
-      return;
-    }
-
+  
+    // if (!validatePassword(password)) {
+    //   toast.error("Password harus memenuhi kriteria keamanan");
+    //   setError("Password harus memenuhi kriteria keamanan");
+    //   setSuccess(null);
+    //   return;
+    // }
     try {
-      const response = await DBSourse.register(username, email, password);
-      if (response.error) {
-        setError(response.error);
-        setSuccess(null);
+      const response = await DBSourse.register(fullName, gender, username, email, password);
+    
+      console.log('Respons dari server:', response);
+    
+      if (response.success === false) {
+        toast.error(response.error); // Menampilkan pesan kesalahan dari server
+        setError(response.error); // Menyimpan pesan kesalahan
+        setSuccess(null); // Menghapus pesan sukses jika ada
       } else {
-        toast.success('Registration successful!');
-        setSuccess('Registration successful!');
-        navigate('/signin');
-        setError(null);
+        toast.success('Registrasi berhasil!'); // Pesan sukses default
+        setSuccess('Registrasi berhasil!'); // Menyimpan pesan sukses
+        navigate('/signin'); // Navigasi setelah registrasi berhasil
+        setError(null); // Menghapus pesan kesalahan jika ada
       }
     } catch (err) {
-      toast.error('Registration failed');
-      setError('Registration failed');
-      setSuccess(null);
+      console.error('Kesalahan saat melakukan registrasi:', err);
+      toast.error('Registrasi gagal'); // Pesan kesalahan jika terjadi kesalahan saat permintaan
+      setError('Registrasi gagal'); // Menyimpan pesan kesalahan
+      setSuccess(null); // Menghapus pesan sukses jika ada
     }
-  };
+  }    
 
   return (
     <AuthLayout>
@@ -82,8 +83,8 @@ const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-13.5 px-26 text-center">
               <Link className="mb-5.5 inline-block" to="/">
-              <div className="flex items-center justify-center">
-                  <img className="hidden dark:block  w-20" src={Logo} alt="Logo" />
+                <div className="flex items-center justify-center">
+                  <img className="hidden dark:block w-20" src={Logo} alt="Logo" />
                   <h2 className="hidden dark:block ml-2 text-3xl font-bold text-white">Cinta Bumi</h2>
                 </div>
                 <div className="flex items-center justify-center">
@@ -92,10 +93,11 @@ const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
                 </div>
               </Link>
               <p className="2xl:px-20">
-              Jadilah anggota cinta bumi dan bantu lindungi bumi kita.
+                Jadilah anggota cinta bumi dan bantu lindungi bumi kita.
               </p>
               <span className="mt-15 inline-block">
-              <svg
+                {/* TODO SVG */}
+                <svg
                   width="350"
                   height="350"
                   viewBox="0 0 350 350"
@@ -228,15 +230,56 @@ const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
               <form onSubmit={handleRegister}>
                 <div className="mb-4">
-                  <label htmlFor='name' className="mb-2.5 block font-medium text-black dark:text-white">
-                    Name <span className='text-red-500'>*</span>
+                  <label htmlFor='fullName' className="mb-2.5 block font-medium text-black dark:text-white">
+                    Nama Lengkap <span className='text-red-500'>*</span>
                   </label>
                   <div className="relative">
                     <input
-                    name="name"
-                    id="name"
+                      name="fullName"
+                      id="fullName"
                       type="text"
                       placeholder="Masukan nama lengkap"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      className="w-full rounded-lg border border-slate-400 bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-slate-400 dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                    <span className="absolute right-4 top-4">
+                      <FaUserCircle size={28} />
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor="gender" className="mb-2.5 block font-medium text-black dark:text-white">
+                    Jenis Kelamin <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      name="gender"
+                      id="gender"
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
+                      className="w-full rounded-lg border border-slate-400 bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-slate-400 dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    >
+                      <option value="" disabled>
+                        Pilih jenis kelamin
+                      </option>
+                      <option value="Laki-Laki">Laki-Laki</option >
+                      <option value="Perempuan">Perempuan</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor='name' className="mb-2.5 block font-medium text-black dark:text-white">
+                    Username <span className='text-red-500'>*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      name="name"
+                      id="name"
+                      type="text"
+                      placeholder="Masukan username"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       className="w-full rounded-lg border border-slate-400 bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-slate-400 dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -253,9 +296,9 @@ const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
                   </label>
                   <div className="relative">
                     <input
-                      type="email"
                       name="email"
                       id="email"
+                      type="email"
                       placeholder="Masukan email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -268,70 +311,66 @@ const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
                 </div>
 
                 <div className="mb-4">
-                <label htmlFor="password" className="mb-2.5 block font-medium text-black dark:text-white">
-                  Password <span className='text-red-500'>*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type={passwordVisible ? "text" : "password"}
-                    name="password"
-                    id="password"
-                    placeholder="Masukan password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full rounded-lg border border-slate-400 bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-slate-400 dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                  <span className="absolute right-4 top-4 cursor-pointer" onClick={togglePasswordVisibility}>
-                    {passwordVisible ? <FaEyeSlash size={28} /> : <FaEye size={28} />}
-                  </span>
-                </div>
-              </div>
-
-                <div className="mb-6">
-                  <label htmlFor="confirm" className="mb-2.5 block font-medium text-black dark:text-white">
-                    Tulis Ulang Password <span className='text-red-500'>*</span>
+                  <label htmlFor='password' className="mb-2.5 block font-medium text-black dark:text-white">
+                    Kata Sandi <span className='text-red-500'>*</span>
                   </label>
                   <div className="relative">
                     <input
-                      type={confirmPasswordVisible ? "text" : "password"}
-                      name="confirm"
-                      id="confirm"
-                      placeholder="Tulis ulaang password"
+                      name="password"
+                      id="password"
+                      type={passwordVisible ? 'text' : 'password'}
+                      placeholder="Masukan kata sandi"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full rounded-lg border border-slate-400 bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-slate-400 dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                    <span
+                      className="absolute right-4 top-4 cursor-pointer"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {passwordVisible ? <FaEyeSlash size={28} /> : <FaEye size={28} />}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor='confirmPassword' className="mb-2.5 block font-medium text-black dark:text-white">
+                    Konfirmasi Kata Sandi <span className='text-red-500'>*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      name="confirmPassword"
+                      id="confirmPassword"
+                      type={confirmPasswordVisible ? 'text' : 'password'}
+                      placeholder="Konfirmasi kata sandi"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className="w-full rounded-lg border border-slate-400 bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-slate-400 dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
-                    <span className="absolute right-4 top-4 cursor-pointer" onClick={toggleConfirmPasswordVisibility}>
+                    <span
+                      className="absolute right-4 top-4 cursor-pointer"
+                      onClick={toggleConfirmPasswordVisibility}
+                    >
                       {confirmPasswordVisible ? <FaEyeSlash size={28} /> : <FaEye size={28} />}
                     </span>
                   </div>
                 </div>
 
-
-                {error && <p className="mb-4 text-red-500">{error}</p>}
-                {success && <p className="mb-4 text-green-500">{success}</p>}
-
-                <div className="mb-5">
-                  <input
+                <div className="mb-4">
+                  <button
                     type="submit"
-                    value="Buat Akun"
-                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
-                  />
+                    className="w-full rounded-lg bg-primary py-4 text-center text-white shadow-md hover:bg-primary-dark"
+                  >
+                    Daftar
+                  </button>
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-slate-400 dark:bg-meta-4 dark:hover:bg-opacity-50">
-                  <FcGoogle size={28} />
-                  Daftar dengan Google
-                </button>
+                {error && <p className="text-red-500">{error}</p>}
+                {success && <p className="text-green-500">{success}</p>}
 
-                <div className="mt-6 text-center">
-                  <p>
-                  Sudah memiliki akun?{' '}
-                    <Link to="/signin" className="text-primary">
-                      Masuk
-                    </Link>
-                  </p>
-                </div>
+                <p className="mt-4 text-center text-sm">
+                  Sudah punya akun? <Link to="/signin" className="text-primary">Masuk</Link>
+                </p>
               </form>
             </div>
           </div>

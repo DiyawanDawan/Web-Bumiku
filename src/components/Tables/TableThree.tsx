@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { FaEye, FaFilePdf } from 'react-icons/fa';
+import  { useEffect, useState } from 'react';
+import { FaEye } from 'react-icons/fa';
 import { HiOutlineDownload } from 'react-icons/hi';
 import { Document, Page, PDFViewer, StyleSheet, Text, View, pdf } from '@react-pdf/renderer';
 import { IoCloseCircle } from "react-icons/io5";
@@ -25,7 +25,7 @@ const TableThree = () => {
         console.log("response", response)
       } catch (error) {
         setLoading(false);
-        console.error('Error fetching sensor data:', error);
+        // console.error('Error fetching sensor data:', error);
       }
     };
 

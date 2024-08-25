@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 // import DefaultLayout from '../layout/DefaultLayout.1';
 import CoverOne from '../images/cover/cover-01.png';
@@ -6,7 +7,29 @@ import { DefaultLayout } from '../layout/DefaultLayout';
 import { FaLinkedin, FaGithub, FaInstagram, FaFacebook } from 'react-icons/fa';
 import { FaMedium } from "react-icons/fa6";
 import { TbWorldWww } from "react-icons/tb";
+// @ts-ignore
+import DBSourse from '../data/api/db-sourse.js';
+import LoadingSpiner from '../components/Spiner/Loading.js';
+
 const Profile = () => {
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await DBSourse.profile();
+        console.log(data);
+        setProfile(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+        setLoading(true);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
 
 
   return (
@@ -91,96 +114,96 @@ const Profile = () => {
               </label>
             </div>
           </div>
-          <div className="mt-4">
-            <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
-              Diyawan
-            </h3>
-            <p className="font-medium">Full Stack Web Developer</p>
-            <div className="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
-              <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
-                <span className="font-semibold text-black dark:text-white">
-                  259
-                </span>
-                <span className="text-sm">Posts</span>
+          {loading ? (
+                <LoadingSpiner />
+          ) : (
+
+            <div className="mt-4">
+              <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
+                {/* {profile.fullName} */}
+              </h3>
+              <div className="mx-auto mt-4.5 mb-5.5 grid max-w-171.5 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
+                <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
+                  <span className="font-semibold text-black dark:text-white">
+                    Jenis Kelamin
+                  </span>
+                  <span className="text-sm">{profile.gender}</span>
+                </div>
+                <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
+                  <span className="font-semibold text-black dark:text-white">
+                    Email
+                  </span>
+                  <span className="text-sm">{profile.email}</span>
+                </div>
+                <div className="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
+                  <span className="font-semibold text-black dark:text-white">
+                    Username
+                  </span>
+                  <span className="text-sm">{profile.username}</span>
+                </div>
               </div>
-              <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
-                <span className="font-semibold text-black dark:text-white">
-                  129K
-                </span>
-                <span className="text-sm">Followers</span>
-              </div>
-              <div className="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
-                <span className="font-semibold text-black dark:text-white">
-                  2K
-                </span>
-                <span className="text-sm">Following</span>
+
+
+
+
+              <div className="mt-6.5">
+                <h4 className="mb-3.5 font-medium text-black dark:text-white">
+                  Follow me on
+                </h4>
+                <div className="flex items-center justify-center gap-3.5">
+                  <a
+                    target="__blank"
+                    href="https://github.com/DiyawanDawan/"
+                    className="hover:text-primary"
+                    aria-label="social-icon"
+                  >
+                    <FaGithub size={25} />
+
+                  </a>
+                  <a target="_blank"
+                    href="https://awancode.netlify.app/"
+                    className="hover:text-primary"
+                    aria-label="social-icon"
+                  >
+                    <TbWorldWww size={25} />
+                  </a>
+                  <a
+                    href="https://medium.com/@diyawandawan/"
+                    target="_blank"
+                    className="hover:text-primary"
+                    aria-label="social-icon"
+                  >
+                    <FaMedium size={25} />
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/diyawan-diyawan-a22394215/"
+                    className="hover:text-primary"
+                    aria-label="social-icon"
+                  >
+
+                    <FaLinkedin size={25} />
+                  </a>
+                  <a
+                    href="https://www.facebook.com/diawan.diawan.9212"
+                    target="_blank"
+                    className="hover:text-primary"
+                    aria-label="social-icon"
+                  >
+                    <FaFacebook size={25} />
+                  </a>
+                  <a
+                    href="https://www.facebook.com/diawan.diawan.9212"
+                    className="hover:text-primary"
+                    aria-label="social-icon"
+                  >
+                    <FaInstagram size={25} />
+                  </a>
+                </div>
               </div>
             </div>
 
-            <div className="mx-auto max-w-180">
-              <h4 className="font-semibold text-black dark:text-white">
-                Tentang saya
-              </h4>
-              <p className="mt-4.5">
-              Saya mahasiswa Teknik Informatika spesialisasi Teknologi Informatika yang saat ini Fokus di pengembangan web, terutama Front End. Saya terus asah keterampilan dan soft skill. Kemampuan komunikasi baik, bisa bekerja tim, kreatif, berpikir strategis, dan selalu ingin tahu tentang inovasi teknologi terbaru. Passion kuat untuk tetap update di pengembangan web, konsisten belajar dan meningkatkan keterampilan. Komitmen mengikuti tren terkini untuk tetap relevan di industri ini.
-              </p>
-            </div>
-
-            <div className="mt-6.5">
-              <h4 className="mb-3.5 font-medium text-black dark:text-white">
-                Follow me on
-              </h4>
-              <div className="flex items-center justify-center gap-3.5">
-                <a
-              target="__blank"
-                  href="https://github.com/DiyawanDawan/"
-                  className="hover:text-primary"
-                  aria-label="social-icon"
-                >
-                  <FaGithub size={25}/>
-                  
-                </a>
-                <a target="_blank"
-                  href="https://awancode.netlify.app/"
-                  className="hover:text-primary"
-                  aria-label="social-icon"
-                >
-                 <TbWorldWww size={25}/>
-                </a>
-                <a
-                  href="https://medium.com/@diyawandawan/"
-                  target="_blank"
-                  className="hover:text-primary"
-                  aria-label="social-icon"
-                >
-                 <FaMedium size={25}/>
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/diyawan-diyawan-a22394215/"
-                  className="hover:text-primary"
-                  aria-label="social-icon"
-                >
-                  
-                  <FaLinkedin size={25}/>
-                </a>
-                <a
-                  href="https://www.facebook.com/diawan.diawan.9212"
-                  target="_blank"
-                  className="hover:text-primary"
-                  aria-label="social-icon"
-                >
-                  <FaFacebook size={25}/>
-                </a>
-                <a
-                  href="https://www.facebook.com/diawan.diawan.9212"
-                  className="hover:text-primary"
-                  aria-label="social-icon"
-                >
-                  <FaInstagram size={25}/>
-                </a>
-              </div>
-            </div>
-          </div>
+          )
+          }
         </div>
       </div>
     </DefaultLayout>

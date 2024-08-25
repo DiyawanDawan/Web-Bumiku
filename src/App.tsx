@@ -16,6 +16,7 @@ import PublicRoute from './components/PublicRoute';
 import { AuthLayout } from './layout/auth/AuthLayout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AdminDashboard from './admin/components/AdminDasboard';
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
@@ -32,91 +33,103 @@ function App() {
     <Loader />
   ) : (
     <>
-     <ToastContainer />
-    <Routes>
-      {/* Public Routes */}
-      <Route element={<PublicRoute />}>
-  
+      <ToastContainer />
+      <Routes>
+        {/* Public Routes */}
+        <Route element={<PublicRoute />}>
+
+          <Route
+            path="/signin"
+            element={
+              <AuthLayout>
+                <PageTitle title="Signin " />
+                <SignIn />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <AuthLayout>
+                <PageTitle title="Signup" />
+                <SignUp />
+              </AuthLayout>
+            }
+          />
+        </Route>
+
+        {/* Protected Routes Admin */}
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+          <Route
+            path="/admin"
+            element={
+              <>
+                <PageTitle title="Dashboard Admin | Cinta Dunia" />
+                <AdminDashboard />
+              </>
+            }
+          />
+        </Route>
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute allowedRoles={['user', 'admin']} />}>
+          <Route
+            path="/dashboard"
+            element={
+              <>
+                <PageTitle title="Dashboard | Cinta Dunia" />
+                <DashboardPage />
+              </>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <>
+                <PageTitle title="Profile | Cinta Dunia" />
+                <Profile />
+              </>
+            }
+          />
+          <Route
+            path="/tables"
+            element={
+              <>
+                <PageTitle title="Tables | Cinta Dunia" />
+                <Tables />
+              </>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <>
+                <PageTitle title="Settings | Cinta Dunia" />
+                <Settings />
+              </>
+            }
+          />
+          <Route
+            path="/chart"
+            element={
+              <>
+                <PageTitle title="Basic Chart | Cinta Dunia" />
+                <Chart />
+              </>
+            }
+          />
+        </Route>
+
+        {/* Not Found Route */}
         <Route
-          path="/signin"
+          path="*"
           element={
             <AuthLayout>
-              <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <SignIn />
+              <PageTitle title="Not Found 404" />
+              <NotFound404 />
             </AuthLayout>
           }
         />
-        <Route
-          path="/signup"
-          element={
-            <AuthLayout>
-              <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <SignUp />
-            </AuthLayout>
-          }
-        />
-      </Route>
-
-      {/* Protected Routes */}
-      <Route element={<ProtectedRoute />}>
-        <Route
-          path="/"
-          element={
-            <>
-              <PageTitle title="Dashboard | Cinta Dunia" />
-              <DashboardPage />
-            </>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <>
-              <PageTitle title="Profile | Cinta Dunia" />
-              <Profile />
-            </>
-          }
-        />
-        <Route
-          path="/tables"
-          element={
-            <>
-              <PageTitle title="Tables | Cinta Dunia" />
-              <Tables />
-            </>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <>
-              <PageTitle title="Settings | Cinta Dunia" />
-              <Settings />
-            </>
-          }
-        />
-        <Route
-          path="/chart"
-          element={
-            <>
-              <PageTitle title="Basic Chart | Cinta Dunia" />
-              <Chart />
-            </>
-          }
-        />
-      </Route>
-
-      {/* Not Found Route */}
-      <Route
-        path="*"
-        element={
-          <AuthLayout>
-            <PageTitle title="Not Found 404" />
-            <NotFound404 />
-          </AuthLayout>
-        }
-      />
-    </Routes>
+      </Routes>
     </>
   );
 }

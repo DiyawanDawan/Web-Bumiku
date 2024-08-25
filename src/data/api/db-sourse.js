@@ -69,36 +69,42 @@
             return json.data;
         }
 
-        static async register(username, email, password) {
+        static async register(fullName, gender, username, email, password) {
             const response = await fetch(API_ENDPOINT.REGISTER, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, email, password }),
+                body: JSON.stringify({
+                    fullName,
+                    gender,
+                    username,
+                    email,
+                    password,
+                }),
             });
-    
             if (!response.ok) {
-                const message = await response.json();
-                return { error: message.message || 'Login failed' };
+                const errorData = await response.json();
+                return { success: false, error: errorData.message || 'Terjadi kesalahan pada server' };
             }
     
             const json = await response.json();
             return json;
         }
+        
 
-        static async login( password, email) {
+        static async login(identifier, password) {
             const response = await fetch(API_ENDPOINT.LOGIN, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({password, email }),
+                body: JSON.stringify({email: identifier, username: identifier, password }),
             });
     
             if (!response.ok) {
                 const message = await response.json();
-                return { error: message.message || 'Login failed' };
+                return { error: message.message || 'Login gagal' };;
             }
     
             const json = await response.json();
@@ -109,6 +115,49 @@
         return json;
         }
 
+    
+    static async profile() {
+        const token = localStorage.getItem('authToken');
+        const response = await fetch(API_ENDPOINT.PROFILE, {
+            headers: {
+                'Authorization': `${token}`
+            }
+        })
+        const json = await response.json();
+        console.log('API response', json); // Inspect the full response
+        
+        return json.data;
+    }
+    static async deleteData(id) {
+        const token = localStorage.getItem('authToken');
+        try {
+            const response = await fetch(`${API_ENDPOINT.DELETE(id)}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            if (!response.ok) {
+                let errorData = null;
+                try {
+                    errorData = await response.json();
+                } catch (e) {
+                    console.error('Error parsing JSON response:', e);
+                }
+                return { success: false, error: errorData?.message || 'Failed to delete data' };
+            }
+    
+            return { success: true };
+    
+        } catch (error) {
+            console.error('Error during deletion:', error);
+            return { success: false, error: 'An error occurred during the deletion process' };
+        }
+    }
+    
+    
     }
 
     export default DBSourse

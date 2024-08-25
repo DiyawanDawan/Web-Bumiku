@@ -5,7 +5,7 @@ const Keterangan: React.FC = () => {
         <div className="overflow-x-auto py-6 rounded-lg">
             <div className="rounded-sm border border-stroke border-gray-100 shadow-lg duration-200 dark:border-indigo-300 bg-white px-5 pt-6  dark:bg-boxdark sm:px-7.5 xl:pb-1 pb-10">
         <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-          Detection Sensor
+          Keterangan Warna
         </h4>
             <table className="min-w-full bg-slate-400 border border-gray-100 shadow-lg dark:border-indigo-300 mb-4">
                 <thead className="bg-gray-200 border-bbg-gray-200 rounded-t-lg dark:bg-gray-700 dark:border-b-2 dark:border-slate-300">

@@ -8,8 +8,31 @@ import { toast, ToastContainer } from "react-toastify";
 import Swal from 'sweetalert2';
 import 'react-toastify/dist/ReactToastify.css';
 import UserOne from '../../images/user/user-01.png';
+// @ts-ignore
+import DBSourse from '../../data/api/db-sourse.js';
+import LoadingSpiner from '../Spiner/Loading.js';
+
 
 const DropdownUser = () => {
+ 
+    const [profile, setProfile] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    useEffect(() => {
+      const fetchProfile = async () => {
+        try {
+          const data = await DBSourse.profile();
+          console.log(data);
+          setProfile(data);
+          setLoading(false);
+        } catch (error) {
+          console.error('Failed to fetch profile:', error);
+          setLoading(true);
+        }
+      };
+  
+      fetchProfile();
+    }, []);
+  
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -67,7 +90,11 @@ const DropdownUser = () => {
   }, [dropdownOpen]);
 
   return (
-    <div className="relative">
+    <>
+    {loading ? (
+      <LoadingSpiner />
+    ) : (
+      <div className="relative">
       <Link
         ref={trigger}
         onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -76,9 +103,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Diyawan
+          {profile.fullName}
           </span>
-          <span className="block text-xs">Full Stack Web Developer</span>
+          <span className="block text-xs"> {profile.email}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
@@ -132,9 +159,11 @@ const DropdownUser = () => {
         </button>
       </div>
       {/* <!-- Dropdown End --> */}
-      
+    
       <ToastContainer />
     </div>
+    )}
+</>
   );
 };
 
