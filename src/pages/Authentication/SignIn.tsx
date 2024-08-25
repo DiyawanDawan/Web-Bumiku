@@ -212,7 +212,7 @@ const SignIn: React.FC = () => {
               <form onSubmit={handleSubmit}>
               <div className="mb-4 relative">
               <label htmlFor="identifier" className="block text-sm font-medium text-gray-700">
-                Email or Username
+                Email Atau Username
               </label>
               <div className="relative">
                 <input
@@ -220,7 +220,8 @@ const SignIn: React.FC = () => {
                   id="identifier"
                   value={identifier}
                   onChange={handleIdentifierChange}
-                  className="mt-1 block w-full pr-10 pl-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  className="w-full rounded-lg border border-slate-400 bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-slate-400 dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  placeholder='Masukan Username atau Email'
                   required
                 />
                 <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -238,7 +239,8 @@ const SignIn: React.FC = () => {
                       id="password"
                       value={password}
                       onChange={handlePasswordChange}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                      className="w-full rounded-lg border border-slate-400 bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-slate-400 dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      placeholder='Masukan Username atau Email'
                       required
                     />
                     <button
