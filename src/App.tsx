@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-
+import {jwtDecode} from 'jwt-decode';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import Chart from './pages/Chart';
@@ -17,18 +17,30 @@ import { AuthLayout } from './layout/auth/AuthLayout';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminDashboard from './admin/components/AdminDasboard';
+import UpdateUserForm from './admin/components/UpdateUser';
+
+interface MyJwtPayload {
+  role: string;
+}
+
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  
   useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      const decodedToken = jwtDecode<MyJwtPayload>(token);
+      setUserRole(decodedToken.role || null);
+    }
     setTimeout(() => setLoading(false), 1000);
   }, []);
-
   return loading ? (
     <Loader />
   ) : (
@@ -69,6 +81,15 @@ function App() {
               </>
             }
           />
+          <Route
+            path="/admin/update-user/:id"
+            element={
+              <>
+                <PageTitle title="Update User | Cinta Dunia" />
+               <UpdateUserForm />
+              </>
+            }
+          />
         </Route>
         {/* Protected Routes */}
         <Route element={<ProtectedRoute allowedRoles={['user', 'admin']} />}>
@@ -90,15 +111,16 @@ function App() {
               </>
             }
           />
-          <Route
-            path="/tables"
+        <Route
+            path={userRole === 'admin' ? '/download' : '/tables'}
             element={
               <>
-                <PageTitle title="Tables | Cinta Dunia" />
-                <Tables />
+                <PageTitle title={userRole === 'admin' ? 'Download' : 'Tables'} />
+                <Tables userRole={userRole} />
               </>
             }
           />
+
           <Route
             path="/settings"
             element={

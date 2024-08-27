@@ -7,6 +7,7 @@ import { BiSolidDashboard } from "react-icons/bi";
 import { FaChartLine, FaTable } from "react-icons/fa";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import {jwtDecode} from 'jwt-decode';
+import { CiSaveDown2 } from 'react-icons/ci';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -190,12 +191,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
               <li>
                 <NavLink
-                  to="/tables"
+                  to={userRole === 'admin' ? '/download' : '/tables'}
                   className={`group relative flex items-center gap-2.5 rounded-md py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:text-indigo-300 hover:border-b-2 hover:border-indigo-500 hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('tables') && 'bg-graydark dark:bg-meta-4'
                     }`}
                 >
-                  <FaTable size={20} />
-                  Tables
+                  {userRole === 'admin' ? <CiSaveDown2 size={25} /> :  <FaTable size={20} />  }
+                  {userRole === 'admin' ? 'Download' : 'Tables'}
                 </NavLink>
               </li>
             </ul>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaUserCircle, FaPhoneSquare } from "react-icons/fa";
-import { IoSettingsSharp } from "react-icons/io5";
+import { FaUserCircle } from "react-icons/fa";
+// import { IoSettingsSharp } from "react-icons/io5";
 import { CiLogout } from "react-icons/ci";
 import { BsChevronDoubleDown } from "react-icons/bs";
 import { toast, ToastContainer } from "react-toastify";
@@ -134,7 +134,7 @@ const DropdownUser = () => {
               My Profile
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="#"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -142,8 +142,8 @@ const DropdownUser = () => {
               <FaPhoneSquare size={28}/>
               My Contacts
             </Link>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <Link
               to="/pages/settings"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -151,7 +151,7 @@ const DropdownUser = () => {
              <IoSettingsSharp size={28}/>
               Account Settings
             </Link>
-          </li>
+          </li> */}
         </ul>
         <button onClick={handleLogout} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
           <CiLogout size={28}/>

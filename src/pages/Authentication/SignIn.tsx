@@ -248,7 +248,11 @@ const SignIn: React.FC = () => {
                       onClick={togglePasswordVisibility}
                       className="absolute inset-y-0 right-0 flex items-center px-2"
                     >
-                      {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                         <span
+                      className="absolute right-4 top-4 cursor-pointer">
+
+                      {passwordVisible  ? <FaEyeSlash size={20}/> : <FaEye size={20}/>}
+                      </span>
                     </button>
                   </div>
                 </div>

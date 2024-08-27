@@ -8,7 +8,11 @@ const API_ENDPOINT = {
     LOGIN: `${CONFIG.BASE_URL}v1/api/login`,
     REGISTER: `${CONFIG.BASE_URL}v1/api/register`,
     PROFILE: `${CONFIG.BASE_URL}v1/api/profile`,
-    DELETE: (id) => `${CONFIG.BASE_URL}v1/api/delete/${id}`,
+    ALLUSERS: `${CONFIG.BASE_URL}v1/api/allUsers`,
+    DELETE_DATA: (id) => `${CONFIG.BASE_URL}v1/api/delete/${id}`,
+    DELETE_USER: (id) => `${CONFIG.BASE_URL}v1/api/deleteUser/${id}`,
+    UPDATE_USER: (id) => `${CONFIG.BASE_URL}v1/api/update-user/${id}`,
+    USER_BY_ID: (id) => `${CONFIG.BASE_URL}v1/api/getuser-user/${id}`,
     WITH_DAY: (sensorType, tanggal) => `${CONFIG.BASE_URL}v1/api/withday?sensorType=${sensorType}&tanggal=${tanggal}`,
     WITH_DAY_EVERAGE: (sensorType, tanggal) => `${CONFIG.BASE_URL}v1/api/rataratappmnhDays?sensorType=${sensorType}&tanggal=${tanggal}`
 }

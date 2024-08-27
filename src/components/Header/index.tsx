@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { CiSearch } from "react-icons/ci";
-import DropdownNotification from './DropdownNotification';
+// import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import LogoIcon from '../../images/logo/icon-72x72.png';
 import DarkModeSwitcher from './DarkModeSwitcher';
@@ -83,7 +83,7 @@ const Header = (props: {
             {/* <!-- Dark Mode Toggler --> */}
 
             {/* <!-- Notification Menu Area --> */}
-            <DropdownNotification />
+           {/* // <DropdownNotification /> */}
             {/* <!-- Notification Menu Area --> */}
 
 

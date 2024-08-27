@@ -72,11 +72,11 @@ const TableOne = () => {
     if (result.isConfirmed) {
       try {
         const response = await DBSourse.deleteData(id);
-        if (response.success) {
+        if (response.success === true) {
           setSensorData(sensorData.filter((data) => data.id !== id));
-          toast.success('Data sensor berhasil dihapus!');
+          toast.success(response.message);
         } else {
-          toast.error(`Gagal menghapus data sensor: ${response.error}`);
+          toast.error(response.message);
         }
       } catch (error) {
         // console.error('Error deleting sensor data:', error);
