@@ -171,20 +171,25 @@ const ChartOne: React.FC = () => {
         if (!Array.isArray(response) || response.length === 0) {
           throw new Error('Invalid response format');
         }
-
-        const phData: number[] = [];
-        const nh3Data: number[] = [];
-        const categories: string[] = [];
-
-        response.forEach(item => {
-          categories.push(item.createdAt);
-          if (item.sensorType === 'PH') {
-            phData.push(item.value);
-          } else if (item.sensorType === 'NH3') {
-            nh3Data.push(item.value);
-          }
+  
+        // Sort data by createdAt date in descending order (latest first)
+        const sortedData = response.sort((a: SensorData, b: SensorData) => {
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         });
-
+  
+        // Filter the latest 20 data entries for both PH and NH3
+        const latestPHData = sortedData
+          .filter(item => item.sensorType === 'PH')
+          .slice(0, 30);
+        const latestNH3Data = sortedData
+          .filter(item => item.sensorType === 'NH3')
+          .slice(0, 30);
+  
+        // Prepare data for the chart
+        const phData: number[] = latestPHData.map(item => item.value);
+        const nh3Data: number[] = latestNH3Data.map(item => item.value);
+        const categories: string[] = latestPHData.map(item => item.createdAt);
+  
         setState(prevState => ({
           ...prevState,
           series: [
@@ -193,6 +198,7 @@ const ChartOne: React.FC = () => {
           ],
           categories: categories
         }));
+  
         if (chartRef.current) {
           chartRef.current.updateSeries([
             { name: 'PH', data: phData },
@@ -205,9 +211,10 @@ const ChartOne: React.FC = () => {
         setLoading(false); // Set loading to false when data fetching is complete
       }
     };
-
+  
     fetchDataAndUpdateState();
   }, []);
+  
 
   const handleReset = () => {
     setState((prevState) => ({

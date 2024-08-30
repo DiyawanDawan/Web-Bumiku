@@ -67,7 +67,7 @@ const UpdateUserForm: React.FC = () => {
         
         console.log('Response:', response); // Log response to see what's returned
 
-        if (response.success === true) {
+        if (response.success) {
             toast.success(response.message);
             navigate('/admin');
         } else {

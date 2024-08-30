@@ -146,7 +146,11 @@ class DBSourse {
     });
 
     // Mengembalikan respons JSON langsung, baik berhasil maupun gagal
-    return response.json();
+      // Mengembalikan respons JSON langsung
+      const jsonResponse = await response.json();
+      console.log(jsonResponse);
+      return jsonResponse;
+  
   }
 
   static async deleteUser(id) {
