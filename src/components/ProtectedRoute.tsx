@@ -33,7 +33,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
     if (allowedRoles.includes(userRole)) {
       return <Outlet />;
     } else {
-      return <Navigate to="/dashboard" />;
+      return <Navigate to="/" />;
     }
   } catch (error) {
     console.error('Invalid token:', error);

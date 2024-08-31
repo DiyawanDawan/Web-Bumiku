@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
@@ -11,6 +11,7 @@ import Tables from './pages/Tables';
 import NotFound404 from './pages/404/NotFound';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
+import LupaPassword from './pages/Authentication/LupaPassword';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
 import { AuthLayout } from './layout/auth/AuthLayout';
@@ -68,6 +69,15 @@ function App() {
               </AuthLayout>
             }
           />
+          <Route
+            path="/reset-password"
+            element={
+              <AuthLayout>
+                <PageTitle title="Signup" />
+                <LupaPassword />
+              </AuthLayout>
+            }
+          />
         </Route>
 
         {/* Protected Routes Admin */}
@@ -94,7 +104,7 @@ function App() {
         {/* Protected Routes */}
         <Route element={<ProtectedRoute allowedRoles={['user', 'admin']} />}>
           <Route
-            path="/dashboard"
+            path="/"
             element={
               <>
                 <PageTitle title="Dashboard | Cinta Dunia" />
@@ -111,15 +121,34 @@ function App() {
               </>
             }
           />
-        <Route
-            path={userRole === 'admin' ? '/download' : '/tables'}
-            element={
-              <>
-                <PageTitle title={userRole === 'admin' ? 'Download' : 'Tables'} />
-                <Tables userRole={userRole} />
-              </>
-            }
-          />
+       <Route
+  path="/download"
+  element={
+    userRole === 'admin' ? (
+      <>
+        <PageTitle title="Download" />
+        <Tables userRole={userRole} />
+      </>
+    ) : (
+      <Navigate to="/tables" replace />
+    )
+  }
+/>
+
+<Route
+  path="/tables"
+  element={
+    userRole !== 'admin' ? (
+      <>
+        <PageTitle title="Tables" />
+        <Tables userRole={userRole} />
+      </>
+    ) : (
+      <Navigate to="/download" replace />
+    )
+  }
+/>
+
 
           <Route
             path="/settings"

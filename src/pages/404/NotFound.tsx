@@ -18,7 +18,7 @@ const NotFound404 = () => {
     }
 
     // Determine the link destination based on the user's role
-    const redirectTo = userRole === 'admin' ? '/admin' : '/dashboard';
+    const redirectTo = userRole === 'admin' ? '/admin' : '/';
 
     return (
         <AuthLayout>

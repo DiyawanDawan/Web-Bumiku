@@ -49,7 +49,7 @@ const SignIn: React.FC = () => {
             if (userRole === 'admin') {
                 navigate('/admin');
             } else {
-                navigate('/dashboard');
+                navigate('/');
             }
 
             toast.success('Login berhasil!');
@@ -208,10 +208,10 @@ const SignIn: React.FC = () => {
           </div>
           <div className="w-full xl:w-1/2">
             <div className="py-10 px-8 xl:py-20 xl:px-16">
-              <h1 className="mb-6 text-2xl font-bold text-center">Sign In</h1>
+              <h1 className="mb-6 text-2xl font-bold">Sign In</h1>
               <form onSubmit={handleSubmit}>
               <div className="mb-4 relative">
-              <label htmlFor="identifier" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 mb-2">
                 Email Atau Username
               </label>
               <div className="relative">
@@ -232,7 +232,7 @@ const SignIn: React.FC = () => {
 
 
                 <div className="mb-4">
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</label>
                   <div className="relative">
                     <input
                       type={passwordVisible ? 'text' : 'password'}
@@ -240,7 +240,7 @@ const SignIn: React.FC = () => {
                       value={password}
                       onChange={handlePasswordChange}
                       className="w-full rounded-lg border border-slate-400 bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-slate-400 dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      placeholder='Masukan Username atau Email'
+                      placeholder='Masukan Password'
                       required
                     />
                     <button
@@ -262,6 +262,14 @@ const SignIn: React.FC = () => {
                 >
                   Sign In
                 </button>
+                <div className="mt-6 text-center">
+                  <p>
+                  
+                    <Link to="/reset-password" className="text-primary">
+                      Minta password baru
+                    </Link>
+                  </p>
+                </div>
                 <div className="mt-6 text-center">
                   <p>
                   Tidak memiliki akun apa pun?{' '}

@@ -84,7 +84,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     >
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
       
-      <NavLink to={userRole === 'admin' ? "/admin" : "/dashboard"} className="flex items-center">
+      <NavLink to={userRole === 'admin' ? "/admin" : "/"} className="flex items-center">
           <span>
             <img
               src={userRole === 'admin' ? Logo : Logo}
@@ -160,7 +160,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                             <li>
                               <NavLink
-                                to="/dashboard"
+                                to="/"
                                 className={({ isActive }) =>
                                   'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-indigo-300 hover:border-b-2 hover:border-indigo-500 ' +
                                   (isActive && '!text-white')
